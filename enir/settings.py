@@ -20,6 +20,15 @@ ENVIRONMENT = config('ENVIRONMENT', default='development')
 # Toggle DEBUG based on environment
 if ENVIRONMENT == 'production':
     DEBUG = False
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT', default=5432, cast=int),
+        }}
 else:
     DEBUG = True
 
@@ -96,9 +105,7 @@ WSGI_APPLICATION = 'enir.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': dj_database_url.parse(config('DATABASE_URL'))
-}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
