@@ -13,4 +13,4 @@ python-decouple>=1.0.0      # Load environment variables from .env file
 
 # For production use 
 gunicorn>=21.2.0
-
+dj-database-url==0.5.0
