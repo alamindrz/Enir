@@ -1,4 +1,5 @@
 from pathlib import Path
+import dj_database_url
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +13,15 @@ SECRET_KEY = config('SECRET_KEY')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+
+# Fetch ENVIRONMENT variable
+ENVIRONMENT = config('ENVIRONMENT', default='development')
+
+# Toggle DEBUG based on environment
+if ENVIRONMENT == 'production':
+    DEBUG = False
+else:
+    DEBUG = True
 
 
 
@@ -80,14 +89,16 @@ WSGI_APPLICATION = 'enir.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(config('DATABASE_URL'))
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

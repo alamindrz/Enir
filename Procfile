@@ -1,1 +1,1 @@
-web: gunicorn enir.wsgi:application --bind 0.0.0.0:$PORT
+web: gunicorn enir.wsgi:application --workers 2 --bind 0.0.0.0:$PORT
