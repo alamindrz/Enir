@@ -9,7 +9,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    path('', include('core.urls')),  # Adjust this to your app
+    path('', include('core.urls')), 
+    
+    path('posts/', include('posts.urls')),  
     
     path('login/', auth_views.LoginView.as_view(template_name='auth/login.html'), name='login'),
     

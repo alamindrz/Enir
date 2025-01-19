@@ -1,89 +1,50 @@
-<div class="bg-white dark:bg-gray-800 shadow">
+<div class="bg-green-700 dark:bg-gray-800 shadow">
     <div class="container mx-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-14">
+            <div class="flex justify-between items-center h-14 ">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <a href="/" class="text-2xl font-bold text-gray-900 dark:text-gray-100">Enir</a>
+                    <a href="/" class="text-2xl font-bold text-white dark:text-gray-100">Enir</a>
                 </div>
 
-                <!-- Links for medium screens and above -->
-                <div class="hidden md:flex md:items-center md:space-x-6">
-                    {% if not user.is_authenticated %}
-                    <a href="{% url 'core:signup' %}" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 text-base font-medium">
-                        Signup
-                    </a>
-                    <a href="{% url 'login' %}" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 text-base font-medium">
-                        Login
-                    </a>
-                    {% else %}
-                    <a href="{% url 'core:profile_view' user.id %}" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400 px-3 py-2 text-base font-medium">
-                        Profile
-                    </a>
-                    <form method="post" action="{% url 'logout' %}" class="inline">
-                        {% csrf_token %}
-                        <button type="submit" class="text-gray-900 dark:text-gray-100 hover:text-red-600 dark:hover:text-red-400 px-3 py-2 text-base font-medium">
-                            Logout
-                        </button>
-                    </form>
-                    {% endif %}
-                </div>
-
-                <!-- Theme Toggle and Hamburger Menu -->
-                <div class="flex items-center space-x-4">
+                <!-- Right Section: Theme Toggle and Account Dropdown -->
+                <div class="flex items-center space-x-6">
                     <!-- Theme Toggle -->
-                    <button onclick="toggleTheme()" class="text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400">
+                    <button onclick="toggleTheme()" class="text-white dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400">
                         <i class="fa-solid fa-circle-half-stroke"></i>
                     </button>
-                    <!-- Hamburger Menu -->
-                    <button type="button" id="mobile-menu-button" class="p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none md:hidden">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
 
-        <!-- Mobile Menu -->
-        <div class="hidden md:hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                {% if not user.is_authenticated %}
-                <a href="{% url 'core:signup' %}" class="block text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">Signup</a>
-                <a href="{% url 'login' %}" class="block text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">Login</a>
-                {% else %}
-                <a href="{% url 'core:profile_view' user.id %}" class="block text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">Profile</a>
-                <form method="post" action="{% url 'logout' %}" class="block">
-                    {% csrf_token %}
-                    <button type="submit" class="w-full text-left text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium">Logout</button>
-                </form>
-                {% endif %}
+                    <!-- Account Dropdown -->
+                    <div class="relative">
+                        <button id="account-dropdown-toggle" class="text-white dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400">
+                            <i class="fa-solid fa-user"></i>
+                        </button>
+                        <div id="account-dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+                            <div class="py-2">
+                                {% if not user.is_authenticated %}
+                                <a href="{% url 'core:signup' %}" class="block px-4 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    Signup
+                                </a>
+                                <a href="{% url 'login' %}" class="block px-4 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    Login
+                                </a>
+                                {% else %}
+                                <a href="{% url 'core:profile_view' user.id %}" class="block px-4 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    Profile
+                                </a>
+                                <form method="post" action="{% url 'logout' %}" class="block">
+                                    {% csrf_token %}
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        Logout
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    const menuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const root = document.documentElement;
-
-    menuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
-    const toggleTheme = () => {
-        if (root.classList.contains('dark')) {
-            root.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        } else {
-            root.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        }
-    };
-
-    // Initialize theme based on localStorage
-    if (localStorage.getItem('theme') === 'dark') {
-        root.classList.add('dark');
-    }
-</script>

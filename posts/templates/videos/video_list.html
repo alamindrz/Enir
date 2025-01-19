@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex">
+    <!-- Main Content -->
+    <div class="flex-grow bg-gray-100 p-6 md:ml-64">
+        <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
+
+            <!-- Video Grid Layout (Tailwind Flex and Grid for Responsiveness) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for video in videos %}
+                <div class="relative video-slide rounded-lg shadow-md" data-index="{{ forloop.counter0 }}">
+
+                    <!-- Video Player -->
+                    <div class="video-wrapper rounded-lg overflow-hidden mb-4 relative">
+                        <video class="w-full h-full object-cover" autoplay loop playsinline>
+                            <source src="{{ video.video.url }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+
+                        <!-- Video Info Overlay -->
+                        <div class="absolute inset-0 bg-transparent text-white p-2 flex flex-col justify-end space-y-1">
+                            <!-- Profile Picture and Username (Linked to Profile View) -->
+                            <div class="flex items-center space-x-2">
+                                <a href="{% url 'core:profile_view' video.user.id %}">
+                                    <img src="{% if video.user.profile_picture %}{{ video.user.profile_picture.url }}{% else %}/media/profile_pics/default.png{% endif %}" 
+                                         alt="Profile Picture" 
+                                         class="w-6 h-6 rounded-full">
+                                </a>
+                                <a href="{% url 'core:profile_view' video.user.id %}" class="font-bold text-sm">
+                                    {{ video.user.username }}
+                                </a>
+                            </div>
+                            <!-- Description -->
+                            <p class="text-xs mb-1">
+                                {{ video.description|slice:":20" }}{% if video.description|length > 20 %}... <a href="#" class="text-green-500">See more</a>{% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                {% empty %}
+                <div class="text-center col-span-2 py-10 text-gray-600">
+                    <p>No videos available.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('.video-slide');
+    let currentSlide = 0;
+
+    const showSlide = (index) => {
+        // Ensure the index wraps around
+        if (index >= slides.length) {
+            currentSlide = 0;  // Go back to the first slide if it's beyond the last slide
+        } else if (index < 0) {
+            currentSlide = slides.length - 1;  // Go to the last slide if it's before the first
+        } else {
+            currentSlide = index;
+        }
+
+        slides.forEach((slide, idx) => {
+            slide.classList.toggle('hidden', idx !== currentSlide);
+            const video = slide.querySelector('video');
+            if (idx === currentSlide) {
+                video.play();
+            } else {
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+    };
+
+    const handleNavigation = (direction) => {
+        if (direction === 'next') {
+            currentSlide++;
+        } else if (direction === 'prev') {
+            currentSlide--;
+        }
+        showSlide(currentSlide);
+    };
+
+    // Swipe functionality for mobile
+    let startX = 0;
+    let endX = 0;
+
+    const handleSwipe = (e) => {
+        const touch = e.changedTouches[0];
+        endX = touch.pageX;
+
+        if (startX > endX) {
+            handleNavigation('next');
+        } else if (startX < endX) {
+            handleNavigation('prev');
+        }
+    };
+
+    slides.forEach(slide => {
+        const videoWrapper = slide.querySelector('.video-wrapper');
+
+        videoWrapper.addEventListener('touchstart', (e) => {
+            startX = e.changedTouches[0].pageX;
+        });
+
+        videoWrapper.addEventListener('touchend', handleSwipe);
+    });
+
+    // Arrow keys for desktop
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            handleNavigation('next');
+        } else if (e.key === 'ArrowLeft') {
+            handleNavigation('prev');
+        }
+    });
+
+    // Show the first slide by default
+    showSlide(currentSlide);
+
+    // Loop back to the first video after the last one
+    const loopThroughVideos = () => {
+        if (currentSlide === slides.length - 1) {
+            currentSlide = -1; // Reset to last video to make the next one the first
+        }
+    };
+    
+    slides.forEach(slide => {
+        slide.addEventListener('transitionend', loopThroughVideos);
+    });
+});
+</script>
+{% endblock %}

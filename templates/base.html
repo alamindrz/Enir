@@ -9,34 +9,46 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
+    
     {% block extra_head %}
     {% endblock %}
+
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+<body class="bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <!-- Navbar -->
     {% include 'partials/navbar.html' %}
+    {% include 'partials/sidebar.html' %}
 
     <!-- Main Content -->
     {% block content %}
     {% endblock %}
 
-    <!-- Footer (Optional) -->
-    <footer class="text-center py-4">
-        <p>&copy; 2025 Enir. All rights reserved.</p>
-    </footer>
 
     <!-- JavaScript -->
     <script>
-        const toggleTheme = () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-        };
-
-        // Initialize theme based on localStorage
-        if (localStorage.theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
+      const dropdownToggle = document.getElementById('account-dropdown-toggle');
+      const dropdownMenu = document.getElementById('account-dropdown-menu');
+      const root = document.documentElement;
+  
+      dropdownToggle.addEventListener('click', () => {
+          dropdownMenu.classList.toggle('hidden');
+      });
+  
+      const toggleTheme = () => {
+          if (root.classList.contains('dark')) {
+              root.classList.remove('dark');
+              localStorage.setItem('theme', 'light');
+          } else {
+              root.classList.add('dark');
+              localStorage.setItem('theme', 'dark');
+          }
+      };
+  
+      // Initialize theme based on localStorage
+      if (localStorage.getItem('theme') === 'dark') {
+          root.classList.add('dark');
+      }
     </script>
+
 </body>
 </html>

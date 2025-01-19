@@ -62,22 +62,75 @@ class SignupForm(forms.ModelForm):
 
 
 class ProfileEditForm(forms.ModelForm):
-    # Adding first name and last name fields to edit
-    first_name = forms.CharField(max_length=30, required=False)
-    last_name = forms.CharField(max_length=30, required=False)
+    first_name = forms.CharField(
+        max_length=30,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+            'placeholder': 'First Name',
+        })
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+            'placeholder': 'Last Name',
+        })
+    )
 
     class Meta:
         model = Profile
-        fields = ['bio',
-        'profile_picture',
-        'street_address', 
-        'city',
-        'state',
-        'postal_code',
-        'country',
-        'latitude',
-        'longitude',
+        fields = [
+            'bio',
+            'profile_picture',
+            'street_address',
+            'city',
+            'state',
+            'postal_code',
+            'country',
+            'latitude',
+            'longitude',
         ]
+        widgets = {
+            'bio': forms.Textarea(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'Tell us about yourself...',
+                'rows': 4,
+            }),
+            'profile_picture': forms.ClearableFileInput(attrs={
+                'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:bg-gray-50 hover:file:bg-gray-100',
+            }),
+            'street_address': forms.TextInput(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'Street Address',
+            }),
+            'city': forms.TextInput(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'City',
+            }),
+            'state': forms.TextInput(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'State',
+            }),
+            'postal_code': forms.TextInput(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'Postal Code',
+            }),
+            'country': forms.TextInput(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'Country',
+            }),
+            'latitude': forms.TextInput(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'Latitude (optional)',
+            }),
+            'longitude': forms.TextInput(attrs={
+                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-700 focus:border-green-700 focus:outline-none sm:text-sm',
+                'placeholder': 'Longitude (optional)',
+            }),
+        }
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
